@@ -76,7 +76,7 @@ func (c *Client) getToken() (err error) {
     // Build the request body
     req, err := http.NewRequest(
         "POST",
-        c.Auth.AuthUrl + "tokens",
+        c.Auth.AuthUrl + "/tokens",
         bytes.NewBuffer(c.Auth.JSON()),
     )
     if err != nil {
