@@ -11,3 +11,10 @@ Usage
 -----
 
 It's so early that there isn't any yet.  Look in ``examples`` for now.
+
+Building
+--------
+
+    sudo apt-get install golang
+    go build
+    ./roscoe
