@@ -6,22 +6,21 @@ import (
     "fmt"
     "log"
 
+    "roscoe/client"
     "roscoe/osclib"
 )
 
 func main() {
     // Get auth values from the environment
-    var auth osclib.Creds
-    err := auth.GetEnv()
+    var creds osclib.Creds
+    c, err := client.NewClient(creds)
     if err != nil {
         log.Fatal(err)
     }
 
-    osclib.GetVersions(auth)
+    osclib.GetVersions(c.Auth)
 
-    token, sc, err := osclib.GetToken(auth)
-    _ = token
-    fmt.Printf("token: %+v\n\n", token)
-    fmt.Printf("sc: %+v\n\n", sc)
-//    fmt.Printf("volume admin: %+v\n", sc[0].Endpoints[0]["adminURL"])
+    c.Authenticate()
+    fmt.Printf("token: %s\n", c.Token)
+    fmt.Printf("servcat: %s\n", c.ServCat)
 }
