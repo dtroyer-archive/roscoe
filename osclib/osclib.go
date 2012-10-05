@@ -22,7 +22,7 @@ import (
 
 // The 'password flow' credentials information provided by the user
 type Creds struct {
-    Auth struct {
+    OSAuth struct {
         PasswordCredentials struct {
             Username string `json:"username"`
             Password string `json:"password"`
@@ -34,16 +34,16 @@ type Creds struct {
 
 // Extract password flow creds from the environment
 func (c *Creds) GetEnv() (err error) {
-    c.Auth.TenantName = os.Getenv("OS_TENANT_NAME")
-    if c.Auth.TenantName == "" {
+    c.OSAuth.TenantName = os.Getenv("OS_TENANT_NAME")
+    if c.OSAuth.TenantName == "" {
         err = errors.New("OS_TENANT_NAME not found")
     }
-    c.Auth.PasswordCredentials.Username = os.Getenv("OS_USERNAME")
-    if c.Auth.PasswordCredentials.Username == "" {
+    c.OSAuth.PasswordCredentials.Username = os.Getenv("OS_USERNAME")
+    if c.OSAuth.PasswordCredentials.Username == "" {
         err = errors.New("OS_USERNAME not found")
     }
-    c.Auth.PasswordCredentials.Password = os.Getenv("OS_PASSWORD")
-    if c.Auth.PasswordCredentials.Password == "" {
+    c.OSAuth.PasswordCredentials.Password = os.Getenv("OS_PASSWORD")
+    if c.OSAuth.PasswordCredentials.Password == "" {
         err = errors.New("OS_PASSWORD not found")
     }
     c.AuthUrl = os.Getenv("OS_AUTH_URL")
