@@ -147,7 +147,7 @@ func GetToken(auth Creds) (token Token, sc []ServiceCatalogEntry, err error) {
     // Build the request body
     req, err := http.NewRequest(
         "POST",
-        auth.AuthUrl + "tokens",
+        auth.AuthUrl + "/tokens",
         bytes.NewBuffer(auth.JSON()),
     )
     if err != nil {
