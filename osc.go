@@ -1,4 +1,4 @@
-// osc.go - OpenStackClient
+// osc.go - roscoe command line
 
 package main
 
@@ -12,8 +12,10 @@ import (
     "roscoe/server"
 )
 
+
 // debug flag
-var debug = flag.Bool("x", false, "set debug mode")
+var debug = flag.Bool("x", false, "Enable debug mode")
+
 
 func main() {
     flag.Parse()

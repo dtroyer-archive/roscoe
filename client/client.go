@@ -1,11 +1,10 @@
-// client.go
+// client.go - roscoe REST client package
 
 package client
 
 import (
     "bytes"
     "encoding/json"
-//    "fmt"
     "io"
     "io/ioutil"
     "net/http"

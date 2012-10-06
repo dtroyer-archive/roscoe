@@ -1,4 +1,4 @@
-// token.go - OpenStackClient
+// token.go - roscoe token example
 
 package main
 
@@ -13,7 +13,7 @@ import (
 
 
 // debug flag
-var debug = flag.Bool("x", false, "set debug mode")
+var debug = flag.Bool("x", false, "Enable debug mode")
 
 
 func main() {

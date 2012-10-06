@@ -1,3 +1,5 @@
+// client_test.go - roscoe client package tests
+
 package client
 
 import (

@@ -1,4 +1,4 @@
-// mystuff.go - OpenStackClient
+// mystuff.go - roscoe client example
 
 package main
 
@@ -14,7 +14,7 @@ import (
 
 
 // debug flag
-var debug = flag.Bool("x", false, "set debug mode")
+var debug = flag.Bool("x", false, "Enable debug mode")
 
 
 func main() {

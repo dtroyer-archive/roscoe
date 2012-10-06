@@ -1,4 +1,4 @@
-// server.go
+// server.go - roscoe server API package
 
 package server
 

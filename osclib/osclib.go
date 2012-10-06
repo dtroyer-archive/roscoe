@@ -1,4 +1,4 @@
-// osclib.go
+// osclib.go - roscoe library package
 
 package osclib
 
