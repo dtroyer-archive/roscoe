@@ -15,6 +15,10 @@ import (
 )
 
 
+// TODO(dtroyer): Is there a better way to do this to pick up
+//                or distribute globals?
+var Debug = new(bool)
+
 // Identity Types
 
 type IdentTokens struct {
@@ -69,6 +73,7 @@ func NewClient(creds osclib.Creds) (oscc *Client, err error) {
         httpClient: &http.Client{},
         Auth: creds,
     }
+    oscc.Authenticate()
     return oscc, nil
 }
 
@@ -89,16 +94,19 @@ func (c *Client) NewRequest(method, url string, body io.Reader) (req *http.Reque
 }
 
 func (c *Client) Do(req *http.Request) (res *Result, err error) {
-    // TODO(dtroyer): work out debug semantics
-    if 1 == 0 {
+    if *Debug {
         d, _ := httputil.DumpRequestOut(req, true)
-        print("req: ", string(d), "\n\n")
+        print("\nREQUEST:\n----------\n", string(d), "\n----------\n")
     }
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return
 	}
+    if *Debug {
+        dr, _ := httputil.DumpResponse(resp, true)
+        print("\nRESULT:\n----------\n", string(dr), "\n----------\n")
+    }
 
 	res = NewResult(resp)
 	return
@@ -106,7 +114,7 @@ func (c *Client) Do(req *http.Request) (res *Result, err error) {
 
 // Authenticate to Identity service
 func (c *Client) Authenticate() (err error) {
-    // Can we inspect the token to see if it has expired?
+    // TODO(dtroyer): Inspect the token to see if it has expired if possible
     // Check service catalog here too
     if c.Token.Id == "" {
         err := c.getToken()
@@ -118,7 +126,8 @@ func (c *Client) Authenticate() (err error) {
     return err
 }
 
-// Perform a simple get
+// Perform a simple get to an endpoint selected
+// by 'api' from the service catalog
 func (c *Client) Get(api string, url string) (resp *Result, err error) {
     req, err := c.NewRequest("GET", c.ServCat[api].URL + url, nil)
     if err != nil {
@@ -140,6 +149,7 @@ func (c *Client) Get(api string, url string) (resp *Result, err error) {
     return resp, nil
 }
 
+// Retrieve a token from the Identity service
 func (c *Client) getToken() (err error) {
     // Build the request body
     // Call the http method directly to avoid a recursive call
@@ -155,19 +165,12 @@ func (c *Client) getToken() (err error) {
 
     req.Header.Add("content-type", "application/json")
 
-
     resp, err := c.Do(req)
     if err != nil {
         // TODO(dtroyer): Handle specific errors
         return err
     }
     defer resp.HResponse.Body.Close()
-
-    // TODO(dtroyer): work out debug semantics
-    if 1 == 0 {
-        dr, _ := httputil.DumpResponse(resp.HResponse, true)
-        print("resp: ", string(dr), "\n\n")
-    }
 
     contents, err := ioutil.ReadAll(resp.HResponse.Body)
     if err != nil {

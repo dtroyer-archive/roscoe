@@ -28,6 +28,17 @@ Building
     go build
     ./roscoe
 
+Using
+-----
+
+Really-low-level:
+
+    var creds osclib.Creds
+    c, err := client.NewClient(creds)
+    servers, err := server.List(c, "")
+
+Error handling omitted.
+
 Examples
 --------
 

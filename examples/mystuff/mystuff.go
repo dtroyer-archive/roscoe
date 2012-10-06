@@ -1,4 +1,4 @@
-// token.go - OpenStackClient
+// mystuff.go - OpenStackClient
 
 package main
 
@@ -9,6 +9,7 @@ import (
 
     "roscoe/client"
     "roscoe/osclib"
+    "roscoe/server"
 )
 
 
@@ -25,7 +26,7 @@ func main() {
 		flag.PrintDefaults()
 	}
 	flag.Parse()
-//    client.Debug = debug
+    client.Debug = debug
 
     if *help == true {
         flag.Usage()
@@ -39,14 +40,16 @@ func main() {
         log.Fatal(err)
     }
 
-    osclib.GetVersions(c.Auth)
-
-    if *verbose == true {
-        fmt.Printf("Token.Id=%s\n", c.Token.Id)
-        fmt.Printf("Token.Expires=%s\n", c.Token.Expires)
-        fmt.Printf("Tenant.Id=%s\n", c.Token.Tenant.Id)
-        fmt.Printf("Tenant.Name=%s\n", c.Token.Tenant.Name)
-    } else {
-        fmt.Printf("%s %s\n", c.Token.Id, c.Token.Expires)
+    fmt.Print("Servers: \n")
+    servers, err := server.List(c, "")
+    if err != nil {
+        log.Fatal(err)
+    }
+    if servers != nil {
+        if *verbose == true {
+            fmt.Printf("c: %+v\n\n", *servers)
+        } else {
+            fmt.Printf("c: %+v\n\n", *servers)
+        }
     }
 }
