@@ -14,6 +14,7 @@ import (
     "net/http/httputil"
     "net/url"
     "os"
+    "reflect"
     "strings"
 )
 
@@ -186,9 +187,10 @@ func GetToken(auth Creds) (token Token, sc []ServiceCatalogEntry, err error) {
 
 func OutputData(headers []string, data []interface{}) (err error) {
     fmt.Print(strings.Join(headers, "\t"), "\n")
-    for _,v := range data {
-        fmt.Printf("%v+\n", v)
-//        fmt.Print(strings.Join([]string(v), "\t"), "\n")
+    for _, v := range data {
+        d := reflect.ValueOf(v)
+        fmt.Printf("%v+\n", d)
+//        fmt.Print(strings.Join(d.String{}, "\t"), "\n")
     }
     return
 }
