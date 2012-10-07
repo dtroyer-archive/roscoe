@@ -43,7 +43,7 @@ Examples
 --------
 
 token
-^^^^^
+_____
 
 Simple example to retrieve a token from an OpenStack Identity service
 using the OpenStack auth environment variables (OS_TENANT_NAME, OS_USERNAME,
@@ -51,3 +51,8 @@ OS_PASSWORD, OS_AUTH_URL).
 
     go build examples/token
     ./token
+
+Dependencies
+------------
+
+roscoe uses goopt "github.com/droundy/goopt" for command-line parsing

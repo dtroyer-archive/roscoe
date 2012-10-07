@@ -3,9 +3,10 @@
 package main
 
 import (
-    "flag"
     "fmt"
     "log"
+
+    goopt "github.com/droundy/goopt"
 
     "roscoe/client"
     "roscoe/flavor"
@@ -14,12 +15,29 @@ import (
 )
 
 
-// debug flag
-var debug = flag.Bool("x", false, "Enable debug mode")
+// debug option
+var debug = goopt.Flag(
+    []string{"-x", "--debug"},
+    []string{"--nodebug"},
+    "Enable debug mode",
+    "Disable debug mode",
+)
 
+var verbose = goopt.Flag(
+    []string{"-v", "--verbose"},
+    []string{"-q", "--quiet"},
+    "output verbosely",
+    "be quiet, instead",
+)
 
 func main() {
-    flag.Parse()
+    goopt.Description = func() string {
+        return "OpenStack client"
+    }
+    goopt.Version = "1.0"
+    goopt.Parse(nil)
+
+    // Propagate debug setting to packages
     client.Debug = debug
 
     // Get auth values from the environment
