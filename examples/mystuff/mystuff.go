@@ -8,6 +8,7 @@ import (
     "log"
 
     "roscoe/client"
+    "roscoe/flavor"
     "roscoe/osclib"
     "roscoe/server"
 )
@@ -52,4 +53,14 @@ func main() {
             fmt.Printf("c: %+v\n\n", *servers)
         }
     }
+
+    flavors, err := flavor.List(c, "")
+    if err != nil {
+        log.Fatal(err)
+    }
+//    osclib.OutputData([]string{"a","b","c"}, []interface{}(flavors))
+    for k, v := range flavors.Flavors {
+        fmt.Printf("%d: %s\n", k, v.Id)
+    }
+
 }

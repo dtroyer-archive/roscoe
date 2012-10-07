@@ -4,6 +4,8 @@
 
 'server' package implements the server OpenStack Compute APIs
 
+Currently supported API version(s): v2
+
 Example:
 
     var creds osclib.Creds

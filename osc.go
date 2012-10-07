@@ -8,8 +8,9 @@ import (
     "log"
 
     "roscoe/client"
+    "roscoe/flavor"
     "roscoe/osclib"
-    "roscoe/server"
+//    "roscoe/server"
 )
 
 
@@ -38,6 +39,22 @@ func main() {
         fmt.Printf("servcat: %s\n", c.ServCat)
     }
 
-    servers, err := server.List(c, "")
-    fmt.Printf("c: %+v\n\n", *servers)
+//    servers, err := server.List(c, "")
+//    fmt.Printf("c: %+v\n\n", *servers)
+
+//    attr := make(server.Attr)
+//    attr["name"] = "npd01"
+//    servers, err := server.Show(c, attr)
+//    if err != nil {
+//        log.Fatal(err)
+//    }
+//    fmt.Printf("c: %+v\n\n", *servers)
+
+    flavors, err := flavor.List(c, "")
+    if err != nil {
+        log.Fatal(err)
+    }
+    for k, v := range flavors.Flavors {
+        fmt.Printf("%d: %s\n", k, v.Id)
+    }
 }
