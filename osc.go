@@ -5,8 +5,9 @@ package main
 import (
     "fmt"
     "log"
+    "os"
 
-    goopt "github.com/droundy/goopt"
+    "github.com/voxelbrain/goptions"
 
     "roscoe/client"
     "roscoe/flavor"
@@ -15,30 +16,22 @@ import (
 )
 
 
-// debug option
-var debug = goopt.Flag(
-    []string{"-x", "--debug"},
-    []string{"--nodebug"},
-    "Enable debug mode",
-    "Disable debug mode",
-)
-
-var verbose = goopt.Flag(
-    []string{"-v", "--verbose"},
-    []string{"-q", "--quiet"},
-    "output verbosely",
-    "be quiet, instead",
-)
-
 func main() {
-    goopt.Description = func() string {
-        return "OpenStack client"
+    options := struct {
+        Debug bool      `goptions:"-x, --debug, description='Enable debugging'"`
+        Verbose bool    `goptions:"-v, --verbose, description='Be not quiet with output'"`
+        goptions.Verbs
+        Show struct {
+                Server        string `goptions:"-s, --server, description='Server to connect to'"`
+        } `goptions:"show"`
+    }{
+        Debug: false,
+        Verbose: false,
     }
-    goopt.Version = "1.0"
-    goopt.Parse(nil)
+    goptions.Parse(&options)
 
     // Propagate debug setting to packages
-    client.Debug = debug
+    client.Debug = &options.Debug
 
     // Get auth values from the environment
     var creds osclib.Creds
@@ -47,12 +40,14 @@ func main() {
         log.Fatal(err)
     }
 
+    print("verb: ", options.Verbs, " ", os.Args[2], "\n")
+
     // Identity API versions
     osclib.GetVersions(c.Auth)
 
     // Test authentication
     c.Authenticate()
-    if *debug {
+    if options.Debug {
         fmt.Printf("token: %s\n", c.Token)
         fmt.Printf("servcat: %s\n", c.ServCat)
     }

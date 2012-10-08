@@ -6,39 +6,25 @@ import (
     "fmt"
     "log"
 
-    goopt "github.com/droundy/goopt"
+    "github.com/voxelbrain/goptions"
 
     "roscoe/client"
     "roscoe/osclib"
 )
 
 
-// Declare options
-
-var debug = goopt.Flag(
-    []string{"-x", "--debug"},
-    []string{"--nodebug"},
-    "Enable debug mode",
-    "Disable debug mode",
-)
-
-var verbose = goopt.Flag(
-    []string{"-v", "--verbose"},
-    []string{"-q", "--quiet"},
-    "output verbosely",
-    "be quiet, instead",
-)
-
-
 func main() {
-    goopt.Description = func() string {
-        return "OpenStack client example"
+    options := struct {
+        Debug bool      `goptions:"-x, --debug, description='Enable debugging'"`
+        Verbose bool    `goptions:"-v, --verbose, description='Be not quiet with output'"`
+    }{
+        Debug: false,
+        Verbose: false,
     }
-    goopt.Version = "1.0"
-    goopt.Parse(nil)
+    goptions.Parse(&options)
 
     // Propagate debug setting to packages
-    client.Debug = debug
+    client.Debug = &options.Debug
 
     // Get auth values from the environment
     var creds osclib.Creds
@@ -49,7 +35,7 @@ func main() {
 
     osclib.GetVersions(c.Auth)
 
-    if *verbose == true {
+    if options.Verbose == true {
         fmt.Printf("Token.Id=%s\n", c.Token.Id)
         fmt.Printf("Token.Expires=%s\n", c.Token.Expires)
         fmt.Printf("Tenant.Id=%s\n", c.Token.Tenant.Id)
