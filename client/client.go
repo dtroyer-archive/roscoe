@@ -1,5 +1,14 @@
 // client.go - roscoe REST client package
 
+/*
+
+A Client contains the authentication credentials and service catalog
+for a specific tenant/user.  Creating a client requires authenticating
+against the Identity service so all subsequent requests are ready to
+be handled, modulo token expiration.
+
+*/
+
 package client
 
 import (
@@ -10,7 +19,7 @@ import (
     "net/http"
     "net/http/httputil"
 
-    "roscoe/osclib"
+//    "roscoe/osclib"
 )
 
 
@@ -55,19 +64,12 @@ type ServiceEndpoint struct {
 
 type Client struct {
     httpClient *http.Client
-    Auth osclib.Creds
+    Auth Credentials
     Token Token
     ServCat map[string]ServiceEndpoint
 }
 
-func NewClient(creds osclib.Creds) (oscc *Client, err error) {
-    // Get credentials
-    if creds.OSAuth.PasswordCredentials.Username == "" {
-        err := creds.GetEnv()
-        if err != nil {
-            return nil, err
-        }
-    }
+func NewClient(creds Credentials) (oscc *Client, err error) {
     oscc = &Client{
         httpClient: &http.Client{},
         Auth: creds,
