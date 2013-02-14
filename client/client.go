@@ -13,6 +13,7 @@ package client
 
 import (
     "bytes"
+    "crypto/tls"
     "encoding/json"
     "io"
     "io/ioutil"
@@ -63,15 +64,20 @@ type ServiceEndpoint struct {
 // Client
 
 type Client struct {
+//    httpTransport *http.Transport
     httpClient *http.Client
     Auth Credentials
     Token Token
     ServCat map[string]ServiceEndpoint
 }
 
-func NewClient(creds Credentials) (oscc *Client, err error) {
+func NewClient(creds Credentials, tls *tls.Config) (oscc *Client, err error) {
+    tr := &http.Transport{
+        TLSClientConfig:    tls,
+    	DisableCompression: true,
+    }
     oscc = &Client{
-        httpClient: &http.Client{},
+        httpClient: &http.Client{Transport: tr},
         Auth: creds,
     }
     oscc.Authenticate()

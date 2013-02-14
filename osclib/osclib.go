@@ -5,7 +5,6 @@ package osclib
 import (
     "bytes"
     "encoding/json"
-    "errors"
     "fmt"
 //    "io"
     "io/ioutil"
@@ -13,56 +12,9 @@ import (
     "net/http"
     "net/http/httputil"
     "net/url"
-    "os"
     "reflect"
     "strings"
 )
-
-
-// Creds
-
-// The 'password flow' credentials information provided by the user
-type Creds struct {
-    OSAuth struct {
-        PasswordCredentials struct {
-            Username string `json:"username"`
-            Password string `json:"password"`
-        } `json:"passwordCredentials"`
-        TenantName string `json:"tenantName"`
-    } `json:"auth"`
-    AuthUrl string `json:"-"`
-}
-
-// Extract password flow creds from the environment
-func (c *Creds) GetEnv() (err error) {
-    c.OSAuth.TenantName = os.Getenv("OS_TENANT_NAME")
-    if c.OSAuth.TenantName == "" {
-        err = errors.New("OS_TENANT_NAME not found")
-    }
-    c.OSAuth.PasswordCredentials.Username = os.Getenv("OS_USERNAME")
-    if c.OSAuth.PasswordCredentials.Username == "" {
-        err = errors.New("OS_USERNAME not found")
-    }
-    c.OSAuth.PasswordCredentials.Password = os.Getenv("OS_PASSWORD")
-    if c.OSAuth.PasswordCredentials.Password == "" {
-        err = errors.New("OS_PASSWORD not found")
-    }
-    c.AuthUrl = os.Getenv("OS_AUTH_URL")
-    if c.AuthUrl == "" {
-        err = errors.New("OS_AUTH_URL not found")
-    }
-    return err
-}
-
-// Produce JSON output
-func (c *Creds) JSON() ([]byte) {
-    reqAuth, err := json.Marshal(c)
-    if err != nil {
-        // Return an empty structure
-        reqAuth = []byte{'{', '}'}
-    }
-    return reqAuth
-}
 
 
 // API Versions

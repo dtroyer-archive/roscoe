@@ -6,8 +6,19 @@ import (
     "os"
     "testing"
 
-    "roscoe/osclib"
+    "roscoe/client"
 )
+
+var creds = client.Credentials {
+    OSAuth: {
+        PasswordCredentials {
+            Username: "ford",
+            Password: "prefect",
+        },
+        TenantName: "ccc-guide",
+    },
+    AuthUrl: "http://ccc.com:42",
+}
 
 func TestNewClient(t *testing.T) {
     // Set env
@@ -15,8 +26,7 @@ func TestNewClient(t *testing.T) {
     os.Setenv("OS_PASSWORD", "prefect")
     os.Setenv("OS_TENANT_NAME", "ccc-guide")
     os.Setenv("OS_AUTH_URL", "http://ccc.com:42")
-    var creds osclib.Creds
-    oscc, _ := NewClient(creds)
+    oscc, _ := client.NewClient(creds, nil)
     if oscc.Auth.OSAuth.PasswordCredentials.Username != "ford" {
         t.Error("NewCLient didn't pick up OS_USERNAME from environment")
     }
