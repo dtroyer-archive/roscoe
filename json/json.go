@@ -48,13 +48,8 @@ func (js *JsonStruct) Array() ([]interface{}, error) {
 
 // Return a ``bool`` type
 func (js *JsonStruct) Bool() (bool, error) {
-    if b, ok := (js.raw).(string); ok {
-        if b == "true" {
-            return true, nil
-        }
-        if b == "false" {
-            return false, nil
-        }
+    if b, ok := (js.raw).(bool); ok {
+        return b, nil
     }
     return false, ErrBoolFailed
 }

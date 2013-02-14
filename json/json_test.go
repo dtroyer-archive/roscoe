@@ -17,13 +17,14 @@ var jt []byte = []byte(`
             "password": "tea"
         },
         "tenantName": "ZZPluralZAlpha",
-        "enabledFalse": "false",
-        "enabledTrue": "true",
+        "enabledFalse": false,
+        "enabledTrue": true,
         "theAnswer": 42,
         "floater": 1.23
     }
 }
 `)
+
 
 func TestJsonGetKey(t *testing.T) {
     log.Print("Test JSON GetKey()")
@@ -62,15 +63,6 @@ func TestJsonBool(t *testing.T) {
         log.Print(err)
     }
 
-    log.Print("Test JSON GetKey().Bool() == true")
-    enabledT, err := js.GetKey("auth", "enabledTrue").Bool()
-    if err != nil {
-        t.Fatalf("json.GetKey.Bool(true) failed: %s", err)
-    }
-    if !enabledT {
-        t.Fatalf("Expected enabled == true, got false")
-    }
-
     log.Print("Test JSON GetKey().Bool() == false")
     enabledF, err := js.GetKey("auth", "enabledFalse").Bool()
     if err != nil {
@@ -78,6 +70,15 @@ func TestJsonBool(t *testing.T) {
     }
     if enabledF {
         t.Fatalf("Expected enabled == false, got true")
+    }
+
+    log.Print("Test JSON GetKey().Bool() == true")
+    enabledT, err := js.GetKey("auth", "enabledTrue").Bool()
+    if err != nil {
+        t.Fatalf("json.GetKey.Bool(true) failed: %s", err)
+    }
+    if !enabledT {
+        t.Fatalf("Expected enabled == true, got false")
     }
 }
 
