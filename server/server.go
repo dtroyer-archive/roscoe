@@ -6,7 +6,8 @@ import (
     "encoding/json"
     "strings"
 
-    "roscoe/client"
+    "roscoe/auth"
+    "roscoe/session"
 )
 
 
@@ -27,8 +28,8 @@ var ServerAttrs = []string{"name", "image", "flavor", "status", "marker", "limit
 
 
 // Compute v2 4.1.1: list servers
-func List(c *client.Client, f string) (servers *ServerResponse, err error) {
-    resp, err := c.Get("compute", "/servers")
+func List(c *session.Session, f string) (servers *ServerResponse, err error) {
+    resp, err := c.Get("/servers", nil)
     if err != nil {
         return nil, err
     }
@@ -43,7 +44,7 @@ func List(c *client.Client, f string) (servers *ServerResponse, err error) {
 }
 
 // Compute v2 4.1.1: list servers
-func Show(c *client.Client, attr Attr) (s *ServerResponse, err error) {
+func Show(c *session.Session, a *auth.Auth, attr Attr) (s *ServerResponse, err error) {
     print("attr: ", attr["name"], "\n")
     // Look for search filters
     var f []string
@@ -55,7 +56,9 @@ func Show(c *client.Client, attr Attr) (s *ServerResponse, err error) {
     filter := strings.Join(f, "&")
     print("filter: ", filter, "\n")
 
-    resp, err := c.Get("compute", "/servers/detail")
+    endpoint, err := a.GetEndpoint("compute", "RegionOne")
+
+    resp, err := c.Get(endpoint + "/servers/detail", nil)
     if err != nil {
         return nil, err
     }

@@ -1,17 +1,14 @@
 # roscoe
 
-include $(GOROOT)/src/Make.$(GOARCH)
+# include $(GOROOT)/src/Make.$(GOARCH)
 
-TABWIDTH=4
-
-#TARG=goargcfg.googlecode.com/hg/argcfg
 GOFILES=\
 	osc.go
 
-include $(GOROOT)/src/Make.pkg
+# include $(GOROOT)/src/Make.pkg
 
 fmt:
-	gofmt -w -tabs=false -tabwidth=$(TABWIDTH) *.go
+	gofmt -w *.go
 
 osctest: package osc.go
 	$(GC) -o main.$(O) -I_obj osc.go

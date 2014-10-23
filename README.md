@@ -10,7 +10,8 @@ of the OpenStack client libraries and a single command-line binary.
 Usage
 -----
 
-It's so early that there isn't any yet.  Look in ``examples`` for now.
+It's so early that there isn't any yet.  ``./osc -h`` should be helpful, or
+look in ``examples``.
 
 Acquiring
 ---------
@@ -33,7 +34,7 @@ Building
 --------
 
     go build
-    ./roscoe
+    ./osc
 
 Using
 -----
@@ -46,7 +47,7 @@ Library API (error handling omitted)::
 
 Command-line:
 
-    roscoe list servers
+    osc list servers
 
 Examples
 --------
