@@ -36,12 +36,12 @@ const (
 type CmdFunc func(c *session.Session, a *auth.Auth, opts interface{}) error
 
 var FlavorCmds map[string]CmdFunc = map[string]CmdFunc{
-	// "list": DoFlavorList,
-    // "show": DoFlavorShow,
+// "list": DoFlavorList,
+// "show": DoFlavorShow,
 }
 
 var ServerCmds map[string]CmdFunc = map[string]CmdFunc{
-    "list": DoServerList,
+	"list": DoServerList,
 	"show": DoServerShow,
 }
 
@@ -91,16 +91,16 @@ func DoFlavorShow(c *session.Session, args []string, opts interface{}) error {
 */
 
 func DoServerList(s *session.Session, a *auth.Auth, opts interface{}) error {
-    if getField(opts, "Servers").FieldByName("All").Bool() {
-        fmt.Printf("all\n")
-    }
-    servers, err := server.List(s, "")
-    fmt.Printf("s: %+v\n\n", *servers)
-    return err
+	if getField(opts, "Servers").FieldByName("All").Bool() {
+		fmt.Printf("all\n")
+	}
+	servers, err := server.List(s, "")
+	fmt.Printf("s: %+v\n\n", *servers)
+	return err
 }
 
 func DoServerShow(s *session.Session, a *auth.Auth, opts interface{}) error {
-    name := getField(opts, "Show").FieldByName("S")
+	name := getField(opts, "Show").FieldByName("S")
 	fmt.Printf("server: %s\n", name)
 	attr := make(server.Attr)
 	attr["name"] = "x"
@@ -168,29 +168,29 @@ type OptType struct {
 	goptions.Verbs
 
 	Flavor struct {
-        goptions.Verbs
-        List struct {
-            goptions.Remainder
-            All bool `goptions:"--all, description='List all flavors'"`
-        } `goptions:"list"`
-        Show struct {
-            goptions.Remainder
-            F string // `goptions:"--qaz"`
-        } `goptions:"show"`
+		goptions.Verbs
+		List struct {
+			goptions.Remainder
+			All bool `goptions:"--all, description='List all flavors'"`
+		} `goptions:"list"`
+		Show struct {
+			goptions.Remainder
+			F string // `goptions:"--qaz"`
+		} `goptions:"show"`
 	} `goptions:"flavor"`
 
-    Server struct {
-        goptions.Verbs
-        List struct {
-            goptions.Remainder
-            All bool `goptions:"--all, description='List all servers'"`
-        } `goptions:"list"`
-        Show struct {
-            // goptions.Remainder
-            All bool `goptions:"--all, description='List all servers'"`
-            S string //`goptions:"-s, --server, description='Server to connect to'"`
-        } `goptions:"show"`
-    } `goptions:"server"`
+	Server struct {
+		goptions.Verbs
+		List struct {
+			goptions.Remainder
+			All bool `goptions:"--all, description='List all servers'"`
+		} `goptions:"list"`
+		Show struct {
+			// goptions.Remainder
+			All bool   `goptions:"--all, description='List all servers'"`
+			S   string //`goptions:"-s, --server, description='Server to connect to'"`
+		} `goptions:"show"`
+	} `goptions:"server"`
 
 	Version struct {
 		Identity bool `goptions:"--identity, mutexgroup='apiver', description='Show Identity API version'"`
@@ -229,10 +229,10 @@ func main() {
 		fmt.Printf("token: %s\n", c.Token)
 	}
 
-    # Option debugging
+	// Option debugging
 	fmt.Printf("object: %+v\n", options.Verbs)
 	fmt.Printf("verb: %+v\n", options.Server.Verbs)
-    fmt.Printf("args: %+v\n", options.Server.Show)
+	fmt.Printf("args: %+v\n", options.Server.Show)
 
 	switch options.Verbs {
 	case "flavor":
